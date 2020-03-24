@@ -18,8 +18,8 @@ namespace Game.Engine
 
         public int Health
         {
-            get => _health;
-            private set
+            get => _health; 
+            set
             {
                 _health = value;
                 OnPropertyChanged();
