@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using Game.Engine.Annotations;
@@ -25,11 +26,26 @@ namespace Game.Engine
             }
         }
 
-        public event EventHandler<EventArgs> PlayerSlept; 
+        public List<string> Weapons { get; set; }
 
         public PlayerCharacter()
         {
             IsNoob = true;
+            CreateStartingWeapons();
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        public event EventHandler<EventArgs> PlayerSlept;
+
+        private void CreateStartingWeapons()
+        {
+            Weapons = new List<string>
+            {
+                "Long Bow",
+                "Short Bow",
+                "Short Sword"
+            };
         }
 
         public void Sleep()
@@ -50,12 +66,15 @@ namespace Game.Engine
             PlayerSlept?.Invoke(this, e);
         }
 
-        public event PropertyChangedEventHandler PropertyChanged;
-
         [NotifyPropertyChangedInvocator]
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        public void TakeDamage(int damage)
+        {
+            Health = Math.Max(1, Health -= damage);
         }
     }
 }

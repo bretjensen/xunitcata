@@ -1,3 +1,4 @@
+using System;
 using Xunit;
 
 namespace Game.Engine.Tests
@@ -101,6 +102,67 @@ namespace Game.Engine.Tests
         {
             var sut = new PlayerCharacter();
             Assert.Null(sut.Nickname);
+        }
+
+        [Fact]
+        public void HaveALongBow()
+        {
+            var sut = new PlayerCharacter();
+            Assert.Contains("Long Bow", sut.Weapons);
+        }
+
+        [Fact]
+        public void NotHaveAStaffOfWonder()
+        {
+            var sut = new PlayerCharacter();
+            Assert.DoesNotContain("Staff of Wonder", sut.Weapons);
+        }
+
+        [Fact]
+        public void HaveAtLeastOneKindOfSword()
+        {
+            var sut = new PlayerCharacter();
+            Assert.Contains(sut.Weapons, weapon => weapon.Contains("Sword"));
+        }
+
+        [Fact]
+        public void HaveAllExpectedWeapons()
+        {
+            var sut = new PlayerCharacter();
+            var expectedWeapons = new[]
+            {
+                "Long Bow",
+                "Short Bow",
+                "Short Sword"
+            };
+            
+            Assert.Equal(expectedWeapons, sut.Weapons);
+        }
+
+        [Fact]
+        public void HaveNoEmptyDefaultWeapons()
+        {
+            var sut = new PlayerCharacter();
+            Assert.All(sut.Weapons, weapon => Assert.False(string.IsNullOrWhiteSpace(weapon)));
+        }
+
+        [Fact]
+        public void RaiseSleptEvent()
+        {
+            var sut = new PlayerCharacter();
+            
+            Assert.Raises<EventArgs>(
+                handler => sut.PlayerSlept += handler,
+                handler => sut.PlayerSlept -= handler,
+                () => sut.Sleep());
+        }
+
+        [Fact]
+        public void RaisePropertyChangedEvent()
+        {
+            var sut = new PlayerCharacter();
+            
+            Assert.PropertyChanged(sut, "Health", () => sut.TakeDamage(10));
         }
     }
 }
