@@ -153,6 +153,15 @@ namespace Game.Engine.Tests
             Assert.PropertyChanged(_sut, "Health", () => _sut.TakeDamage(10));
         }
 
+        [Theory]
+        [MemberData(nameof(ExternalHealthDamageTestData.TestData), 
+            MemberType =  typeof(ExternalHealthDamageTestData))]
+        public void TakeDamage(int damage, int expectedHealth)
+        {
+            _sut.TakeDamage(damage);
+            Assert.Equal(expectedHealth, _sut.Health);
+        }
+
         public void Dispose()
         {
             _output.WriteLine($"Disposing Player Character {_sut.FullName}");

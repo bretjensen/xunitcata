@@ -20,7 +20,7 @@ namespace Game.Engine.Tests
             Assert.IsType<NormalEnemy>(enemy);
         }
 
-        [Fact(Skip="Don't need to run")]
+        [Fact]
         public void CreateNormalEnemyByDefault_NotTypeExample()
         {
             var enemy = _sut.Create("Zombie");
